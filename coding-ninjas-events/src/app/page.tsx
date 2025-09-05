@@ -11,7 +11,7 @@ export default function ScrollCardComponent() {
   const [isMobile, setIsMobile] = React.useState(false)
   const [selectedCard, setSelectedCard] = React.useState<any>(null)
 
-  // Detect screen size to adjust layout for mobile
+  // Screen size detection for responsive layout
   React.useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768)
     checkMobile()
@@ -21,7 +21,7 @@ export default function ScrollCardComponent() {
 
   // Card data with images, date, and description
   const cards = [
-    { 
+    {
       id: 1,
       image: "https://picsum.photos/1200/900?random=1",
       month: "January",
@@ -29,7 +29,7 @@ export default function ScrollCardComponent() {
       title: "Winter Wonderland",
       description: "A magical winter landscape captured during the first snowfall of the year. The pristine snow blankets everything in sight, creating a serene and peaceful atmosphere that marks the beginning of a new year filled with possibilities."
     },
-    { 
+    {
       id: 2,
       image: "https://picsum.photos/1200/900?random=2",
       month: "February",
@@ -37,7 +37,7 @@ export default function ScrollCardComponent() {
       title: "Love in Bloom",
       description: "Valentine's month brings warmth to the coldest time of year. This photograph captures the essence of love and connection, with delicate details that remind us of the beauty found in intimate moments and shared experiences."
     },
-    { 
+    {
       id: 3,
       image: "https://picsum.photos/1200/900?random=3",
       month: "March",
@@ -45,7 +45,7 @@ export default function ScrollCardComponent() {
       title: "Spring Awakening",
       description: "As winter fades away, nature begins its spectacular transformation. This image showcases the first signs of spring - fresh growth, renewed energy, and the promise of warmer days ahead filled with vibrant colors and new beginnings."
     },
-    { 
+    {
       id: 4,
       image: "https://picsum.photos/1200/900?random=4",
       month: "April",
@@ -55,25 +55,31 @@ export default function ScrollCardComponent() {
     },
   ]
 
-  const SEGMENT_VH = 300 // Scroll height per card
+  const SEGMENT_VH = 300 // Vertical height per card segment
   const wrapperRef = React.useRef<HTMLDivElement>(null)
 
-  // Track scroll position relative to wrapper
+  // Track scroll position within wrapper
   const { scrollYProgress } = useScroll({
     target: wrapperRef,
     offset: ["start start", "end end"],
   })
 
-  // Map scroll progress to card index range
+  // Map scroll to card progress (0 to cards.length)
   const cardProgress = useTransform(scrollYProgress, [0, 1], [0, cards.length])
 
-  // Compute transforms for each card
+  // Calculate transformations for each card based on scroll position
   const transforms = cards.map((_, i) => {
+    // Card enters from bottom (y=800 to y=0)
     const incomingY = useTransform(cardProgress, [i, i + 1], [800, 0])
+    // Card gets pushed down as next card enters
     const pushDownY = useTransform(cardProgress, [i + 1, i + 2], [0, 60])
+    // Card scales up as it enters
     const scaleIn = useTransform(cardProgress, [i, i + 0.3], [0.95, 1])
+    // Card scales down as it exits
     const scaleOut = useTransform(cardProgress, [i + 1, i + 2], [1, 0.85])
+    // Card rotates slightly as it enters
     const rotate = useTransform(cardProgress, [i, i + 0.5], [2, 0])
+    // Date opacity fades in/out with card
     const dateOpacity = useTransform(cardProgress, [i + 0.6, i + 1.4], [1, 0])
 
     // Combine transformations
@@ -86,7 +92,7 @@ export default function ScrollCardComponent() {
     return { y, scale, rotate, zIndex, dateOpacity }
   })
 
-  // Fade-in for the last card's date
+  // Last card's date opacity fades in at the end of scroll
   const lastCardDateOpacity = useTransform(
     cardProgress,
     [cards.length - 0.2, cards.length],
@@ -107,26 +113,20 @@ export default function ScrollCardComponent() {
     if (e.target === e.currentTarget) handleCloseModal()
   }
 
-  // Prevent body scroll when modal is open
+  // Prevent scrolling when modal is open
   React.useEffect(() => {
-    if (selectedCard) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = "unset"
-    }
-    return () => {
-      document.body.style.overflow = "unset"
-    }
+    document.body.style.overflow = selectedCard ? "hidden" : "unset"
+    return () => { document.body.style.overflow = "unset" }
   }, [selectedCard])
 
   return (
     <div style={{ backgroundColor: "#000", minHeight: "100vh" }} className={inter.className}>
-      {/* Scrollable wrapper with dynamic height */}
+      {/* Scrollable container */}
       <div
         ref={wrapperRef}
         style={{ height: `${cards.length * SEGMENT_VH}vh`, position: "relative" }}
       >
-        {/* Sticky container keeps cards and dates in place */}
+        {/* Sticky container for cards and dates */}
         <div
           style={{
             position: "sticky",
@@ -138,7 +138,7 @@ export default function ScrollCardComponent() {
             gap: isMobile ? "0" : "4rem",
           }}
         >
-          {/* Date stack (shown only on desktop) */}
+          {/* Date column (desktop only) */}
           {!isMobile && (
             <motion.div
               style={{
@@ -185,7 +185,7 @@ export default function ScrollCardComponent() {
             </motion.div>
           )}
 
-          {/* Card stack with images */}
+          {/* Card stack */}
           <div style={{ position: "relative", width: CARD_WIDTH, height: CARD_HEIGHT }}>
             {cards.map((c, i) => {
               const t = transforms[i]
@@ -203,11 +203,8 @@ export default function ScrollCardComponent() {
                     zIndex: t.zIndex,
                     boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
                     overflow: "hidden",
-                    cursor: "pointer",
                   }}
                   transition={{ ease: "easeInOut", duration: 0.6 }}
-                  whileHover={{ scale: 1.02 }} // simple hover effect (fixed from invalid hook usage)
-                  whileTap={{ scale: 0.98 }}   // simple tap effect
                   onClick={() => handleCardClick(c)}
                 >
                   <img
@@ -216,7 +213,7 @@ export default function ScrollCardComponent() {
                     style={{ width: "100%", height: "100%", objectFit: "cover" }}
                   />
 
-                  {/* Date overlay for mobile view */}
+                  {/* Mobile date overlay */}
                   {isMobile && (
                     <motion.div
                       style={{
@@ -252,7 +249,7 @@ export default function ScrollCardComponent() {
         </div>
       </div>
 
-      {/* Modal overlay for card details */}
+      {/* Modal */}
       <AnimatePresence>
         {selectedCard && (
           <motion.div
@@ -264,12 +261,13 @@ export default function ScrollCardComponent() {
               position: "fixed",
               inset: 0,
               backgroundColor: "rgba(0, 0, 0, 0.9)",
-              backdropFilter: "blur(10px)",
+              backdropFilter: "blur(5px)",
               zIndex: 10000,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               padding: isMobile ? "20px" : "40px",
+              overflowY: "auto"
             }}
             onClick={handleBackdropClick}
           >
@@ -278,80 +276,76 @@ export default function ScrollCardComponent() {
               initial={{ scale: 0.8, opacity: 0, y: 50 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.8, opacity: 0, y: 50 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               style={{
                 backgroundColor: "#1a1a1a",
                 borderRadius: "16px",
                 overflow: "hidden",
                 maxWidth: isMobile ? "100%" : "900px",
-                maxHeight: "90vh",
                 width: "100%",
                 position: "relative",
                 boxShadow: "0 25px 80px rgba(0, 0, 0, 0.6)",
+                maxHeight: isMobile ? "none" : "90vh",
               }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close button */}
-              <motion.button
-                whileHover={{ scale: 1.1, backgroundColor: "rgba(255, 255, 255, 0.2)" }}
-                whileTap={{ scale: 0.9 }}
-                onClick={handleCloseModal}
-                style={{
-                  position: "absolute",
-                  top: "20px",
-                  right: "20px",
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  border: "none",
-                  color: "#ffffff",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                  zIndex: 10,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backdropFilter: "blur(10px)",
-                }}
-              >
-                ×
-              </motion.button>
-
-              {/* Modal content split into image and text */}
-              <div style={{ 
-                display: "flex", 
-                flexDirection: isMobile ? "column" : "row",
-                height: isMobile ? "auto" : "600px"
+              {/* Content container with blurred background image */}
+              <div style={{
+                position: "relative",
+                overflow: "hidden",
+                width: "100%",
+                minHeight: isMobile ? "auto" : "500px",
+                maxHeight: isMobile ? "none" : "90vh",
+                display: "flex",
+                flexDirection: "column"
               }}>
-                {/* Image section */}
-                <div style={{ 
-                  flex: isMobile ? "none" : "1.5",
-                  height: isMobile ? "300px" : "100%",
-                  overflow: "hidden"
+                {/* Blurred background image */}
+                <div style={{
+                  position: "absolute",
+                  inset: 0,
+                  overflow: "hidden",
+                  zIndex: 1
                 }}>
                   <motion.img
-                    initial={{ scale: 1.1 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    initial={{ scale: 1.1, filter: "blur(5px)" }}
+                    animate={{ scale: 1, filter: "blur(5px)" }} // Increased blur
+                    transition={{ duration: 0.8, ease: "easeOut" }}
                     src={selectedCard.image}
-                    alt={selectedCard.title}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    alt="Background"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      opacity: 0.7 // Reduced opacity for better text contrast
+                    }}
                   />
+
+                  {/* Gradient overlay for better text readability */}
+                  <div style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: "linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%)",
+                    zIndex: 2
+                  }} />
                 </div>
 
-                {/* Text section */}
+                {/* Text content positioned over the image */}
                 <motion.div
-                  initial={{ x: isMobile ? 0 : 50, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
                   style={{
-                    flex: 1,
-                    padding: isMobile ? "30px 20px" : "40px",
+                    position: "relative",
+                    zIndex: 3,
+                    padding: isMobile ? "25px 20px 30px" : "40px",
                     color: "#ffffff",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
+                    overflow: "auto",
+                    maxHeight: "100%",
+                    width: "100%",
+                    flex: 1
                   }}
                 >
                   {/* Date */}
@@ -361,10 +355,11 @@ export default function ScrollCardComponent() {
                     transition={{ duration: 0.4, delay: 0.3 }}
                     style={{
                       fontSize: isMobile ? "14px" : "16px",
-                      color: "#999999",
-                      marginBottom: "10px",
+                      color: "#ffffff",
+                      marginBottom: "5px",
                       textTransform: "uppercase",
                       letterSpacing: "1px",
+                      textShadow: "0 2px 4px rgba(0,0,0,0.4)"
                     }}
                   >
                     {selectedCard.month} {selectedCard.year}
@@ -376,10 +371,12 @@ export default function ScrollCardComponent() {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.4, delay: 0.4 }}
                     style={{
-                      fontSize: isMobile ? "28px" : "36px",
+                      fontSize: isMobile ? "28px" : "42px",
                       fontWeight: 700,
                       marginBottom: "20px",
                       lineHeight: "1.2",
+                      margin: "0 0 20px 0",
+                      textShadow: "0 2px 8px rgba(0,0,0,0.6)"
                     }}
                   >
                     {selectedCard.title}
@@ -388,25 +385,30 @@ export default function ScrollCardComponent() {
                   {/* Divider */}
                   <motion.div
                     initial={{ width: 0 }}
-                    animate={{ width: "60px" }}
+                    animate={{ width: isMobile ? "95%" : selectedCard.title.length * 20 + (100 - selectedCard.title.length) }}
                     transition={{ duration: 0.6, delay: 0.5 }}
                     style={{
                       height: "3px",
                       backgroundColor: "#ffffff",
                       marginBottom: "20px",
+                      borderRadius: "10px"
                     }}
                   />
 
-                  {/* Description */}
+                  {/* Description with proper text wrapping */}
                   <motion.p
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.4, delay: 0.6 }}
                     style={{
                       fontSize: isMobile ? "16px" : "18px",
-                      lineHeight: "1.6",
-                      color: "#cccccc",
+                      lineHeight: "1.7",
+                      color: "#ffffff",
                       margin: 0,
+                      wordWrap: "break-word",
+                      overflow: "visible",
+                      maxWidth: isMobile ? "100%" : "800px",
+                      textShadow: "0 1px 3px rgba(0,0,0,0.4)"
                     }}
                   >
                     {selectedCard.description}
