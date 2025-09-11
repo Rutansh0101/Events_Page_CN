@@ -1,0 +1,196 @@
+{
+  "timelineEvents": [
+    {
+      "id": 1,
+      "year": 2015,
+      "month": "Jan",
+      "title": "Company Founded",
+      "description": "Initial company incorporation and team formation with founding members.",
+      "imageId": 1001
+    },
+    {
+      "id": 2,
+      "year": 2015,
+      "month": "Jun",
+      "title": "Seed Funding",
+      "description": "Raised $500K in seed funding from angel investors to kickstart operations.",
+      "imageId": 1005
+    },
+    {
+      "id": 3,
+      "year": 2016,
+      "month": "Mar",
+      "title": "First Product",
+      "description": "Launched MVP with core features and onboarded first 100 beta users.",
+      "imageId": 1012
+    },
+    {
+      "id": 4,
+      "year": 2016,
+      "month": "Sep",
+      "title": "Series A",
+      "description": "Closed $2M Series A funding round led by venture capital firm.",
+      "imageId": 1018
+    },
+    {
+      "id": 5,
+      "year": 2017,
+      "month": "Feb",
+      "title": "Team Expansion",
+      "description": "Grew team to 25 employees across engineering, sales, and marketing.",
+      "imageId": 1025
+    },
+    {
+      "id": 6,
+      "year": 2017,
+      "month": "Aug",
+      "title": "Product V2",
+      "description": "Major product overhaul with new UI/UX and advanced analytics features.",
+      "imageId": 1030
+    },
+    {
+      "id": 7,
+      "year": 2018,
+      "month": "Jan",
+      "title": "Enterprise Launch",
+      "description": "Launched enterprise tier with advanced security and compliance features.",
+      "imageId": 1035
+    },
+    {
+      "id": 8,
+      "year": 2018,
+      "month": "May",
+      "title": "Project Launch",
+      "description": "Initial setup and project launch with stakeholders onboard.",
+      "imageId": 1011
+    },
+    {
+      "id": 9,
+      "year": 2018,
+      "month": "Oct",
+      "title": "International Expansion",
+      "description": "Opened offices in London and Tokyo, serving global customer base.",
+      "imageId": 1040
+    },
+    {
+      "id": 10,
+      "year": 2019,
+      "month": "Apr",
+      "title": "Mobile App",
+      "description": "Released iOS and Android mobile applications with offline sync.",
+      "imageId": 1045
+    },
+    {
+      "id": 11,
+      "year": 2019,
+      "month": "Nov",
+      "title": "AI Integration",
+      "description": "Integrated machine learning capabilities for predictive analytics.",
+      "imageId": 1050
+    },
+    {
+      "id": 12,
+      "year": 2020,
+      "month": "Mar",
+      "title": "Remote Pivot",
+      "description": "Successfully transitioned to fully remote operations during pandemic.",
+      "imageId": 1055
+    },
+    {
+      "id": 13,
+      "year": 2020,
+      "month": "Oct",
+      "title": "Mid-phase Review",
+      "description": "Review of progress and adjusting milestones accordingly.",
+      "imageId": 1025
+    },
+    {
+      "id": 14,
+      "year": 2021,
+      "month": "Jan",
+      "title": "Series B",
+      "description": "Raised $15M Series B to accelerate growth and R&D investments.",
+      "imageId": 1060
+    },
+    {
+      "id": 15,
+      "year": 2021,
+      "month": "Jul",
+      "title": "Platform API",
+      "description": "Released comprehensive API platform for third-party integrations.",
+      "imageId": 1065
+    },
+    {
+      "id": 16,
+      "year": 2022,
+      "month": "Feb",
+      "title": "User Feedback",
+      "description": "Gathered feedback from early users to improve features.",
+      "imageId": 1033
+    },
+    {
+      "id": 17,
+      "year": 2022,
+      "month": "Sep",
+      "title": "Acquisition",
+      "description": "Acquired competitor startup to expand market share and talent pool.",
+      "imageId": 1070
+    },
+    {
+      "id": 18,
+      "year": 2023,
+      "month": "Mar",
+      "title": "IPO Preparation",
+      "description": "Began preparations for initial public offering with investment banks.",
+      "imageId": 1075
+    },
+    {
+      "id": 19,
+      "year": 2023,
+      "month": "Dec",
+      "title": "Global Milestone",
+      "description": "Reached 1 million active users across 50 countries worldwide.",
+      "imageId": 1080
+    },
+    {
+      "id": 20,
+      "year": 2024,
+      "month": "Apr",
+      "title": "Public Launch",
+      "description": "Successful IPO launch on NASDAQ with strong market reception.",
+      "imageId": 1085
+    },
+    {
+      "id": 21,
+      "year": 2024,
+      "month": "Jul",
+      "title": "Final Testing",
+      "description": "The final round of testing before public release.",
+      "imageId": 1045
+    },
+    {
+      "id": 22,
+      "year": 2024,
+      "month": "Nov",
+      "title": "Next Gen Platform",
+      "description": "Launched next-generation platform with AI-powered automation.",
+      "imageId": 1090
+    },
+    {
+      "id": 23,
+      "year": 2025,
+      "month": "Feb",
+      "title": "Sustainability Initiative",
+      "description": "Launched carbon-neutral operations and green technology program.",
+      "imageId": 1095
+    },
+    {
+      "id": 24,
+      "year": 2025,
+      "month": "Jun",
+      "title": "Innovation Lab",
+      "description": "Opened dedicated R&D innovation lab for emerging technologies.",
+      "imageId": 1100
+    }
+  ]
+}
